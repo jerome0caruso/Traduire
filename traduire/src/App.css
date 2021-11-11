@@ -7,7 +7,10 @@
   background-attachment: fixed;
   background-size: cover;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 56px);
+}
+.appContainer h1{
+  padding-top: 2rem;
 }
 .App {
   width: 100%;
@@ -27,7 +30,7 @@
   justify-content: center;
 }
 .eachInputContainer {
-  margin-top: 10rem;
+  margin-top: 3rem;
 }
 #mainInput, #mainOutput{
   width: 400px;
@@ -35,11 +38,21 @@
 }
 textarea { resize: none; }
 
-
+.navBar, .navBar a {
+  background-color: #31bae0;
+  color: white;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+.mainHeading {
+  font-family: 'Balsamiq Sans', cursive;
+  color:white;
+  font-size: 120px;
+  padding: 0;
+  margin: 0;
 }
 
 .App-header {

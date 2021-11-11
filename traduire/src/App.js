@@ -3,6 +3,7 @@ import './App.css';
 import MainInput from './componets/Input';
 import MainOutput from './componets/Output';
 import NavBar from './componets/NavBar';
+import MainPage from './views/MainPage';
 import Login from './views/Login';
 import MyAccount from './views/MyAccount';
 import Register from './views/Register';
@@ -10,6 +11,8 @@ import Home from './views/Home'
 import MyCards from './views/MyCards';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import LoggedOut from './views/loggedOut';
+import EachAccount from './views/EachAccount';
+import LanguageSelectors from './componets/LanguageSelectors'
 const LanguageTranslatorV3 = require('ibm-watson/language-translator/v3');
 const { IamAuthenticator } = require('ibm-watson/auth');
 
@@ -18,6 +21,7 @@ function App() {
   const [toBeTranslated, setToBeTranslated] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [language, setLanguage] = useState('');
  
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -90,34 +94,39 @@ function App() {
       setToBeTranslated("");
     }
   
-
   return (
       <BrowserRouter>
-      
         <NavBar loggedIn={loggedIn} setLoggedIn={setLoggedIn} currentUser={currentUser} setCurrentUser={setCurrentUser} />
         <Routes>
             <Route path='/' exact={true} element={<Home />} />
             <Route default path='/home' element={<Home />}/>
             <Route className="appContainer" path='/:id' element={
-              <div className="input-container appContainer">
-                <div className="eachInputContainer">
-                  <MainInput
-                    toBeTranslated={toBeTranslated}
-                    setToBeTranslated={setToBeTranslated}
-                    handleSubmit={handleSubmit}
-                    handleClear={clearFields}
-                    handleflashCards={flashCardsTranslation} />
-                </div>
-                <div className="eachInputContainer">
-                  <MainOutput toBeTranslated={toBeTranslated} setToBeTranslated={setToBeTranslated} handleClear={clearFields} />
+              <div className="appContainer text-center">
+                <h1 className="mainHeading">Traduire</h1>
+                <div className="input-container ">
+                  <div className="eachInputContainer">
+                    <LanguageSelectors />
+                    <MainInput
+                      toBeTranslated={toBeTranslated}
+                      setToBeTranslated={setToBeTranslated}
+                      handleSubmit={handleSubmit}
+                      handleClear={clearFields}
+                      handleflashCards={flashCardsTranslation} />
+                  </div>
+                  <div className="eachInputContainer">
+                    <LanguageSelectors />
+                    <MainOutput toBeTranslated={toBeTranslated} setToBeTranslated={setToBeTranslated} handleClear={clearFields} />
+                  </div>
                 </div>
               </div>
+
             }></Route >
           <Route path='/login' element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} currentUser={currentUser} setCurrentUser={setCurrentUser}/>}></Route>
           <Route path='/loggedout' element={ <LoggedOut/> }></Route>
           <Route path='/myAccount:id' element={ <MyAccount currentUser={currentUser} setCurrentUser={setCurrentUser}/> }></Route>
           <Route path='/myCards:id' element={ <MyCards flashCards={flashCards}  currentUser={currentUser}  setFlashCards={setFlashCards} toBeTranslated={toBeTranslated} />} />
           <Route path='/register' element={ <Register />} />
+          <Route path='/eachAccount' element={ <EachAccount currentUser={currentUser} setCurrentUser={setCurrentUser}/>} />
         </Routes>
     </BrowserRouter>
   );

@@ -5,7 +5,7 @@ import Logout from './LogOut';
 const NavBar = (props) => {
     return (
       props.loggedIn ? (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navBar">
           <div className="container-fluid">
             <Link style={{listStyleType: 'none'}} className="navbar-brand" to={`/${props.currentUser.id}`}>Traduire</Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,7 @@ const NavBar = (props) => {
         ) 
         : 
       (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navBar">
         <div className="container-fluid">
           <li style={{listStyleType: 'none'}} className="navbar-brand" to="/">Traduire</li>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@ const NavBar = (props) => {
                 <Link className="nav-link active" aria-current="page" to="/login">LogIn</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Register</a>
+                <Link className="nav-link" to="/register">Register</Link>
               </li>
             </ul>
           </div>

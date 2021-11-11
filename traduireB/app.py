@@ -77,7 +77,6 @@ def login():
     return jsonify("Invalid")
   
 
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     data = request.data
@@ -113,6 +112,49 @@ def getCards(id):
     user = User.query.get_or_404(id)
     print(user.cardlist)
     return jsonify(user.cardlist)
+
+@app.route('/update<id>', methods=['PUT'])
+# @login_required
+def updateUser(id):
+    data = request.data
+    user_dict = json.loads(data.decode('UTF-8'))
+    id = user_dict['userId']
+    username = user_dict['username']
+    email = user_dict['email']
+    user = User.query.get_or_404(id)
+    user.username = username
+    user.email = email
+    print(user_dict)
+    db.session.add(user) 
+    db.session.commit()
+    return jsonify("Updating user", user_dict)
+
+@app.route('/delete<id>', methods=['DELETE'])
+# @login_required
+def deleteUser(id):
+    data = request.data
+    user_dict = json.loads(data.decode('UTF-8'))
+    id = user_dict['userId']
+    user = User.query.get_or_404(id)
+    db.session.delete(user) 
+    db.session.commit()
+    print('deleteing user ', user_dict)
+    return jsonify("Deleting user", user_dict)
+
+@app.route('/delete/card<id>', methods=['DELETE'])
+# @login_required
+def deleteCard(id):
+    data = request.data
+    card_dict = json.loads(data.decode('UTF-8'))
+    id = card_dict['cardId']
+    user_id = card_dict['userId']
+    user = User.query.get_or_404(user_id)
+    user.cardlist = [card_id for card_id in user.cardlist if card_id[0] != id]
+    
+    print("NEW CARD LIST")
+    print(user.cardlist)
+    db.session.commit()
+    return jsonify("Deleting user", card_dict)
 
 @app.route('/dashboard')
 @login_required
