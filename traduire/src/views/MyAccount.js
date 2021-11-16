@@ -28,8 +28,6 @@ const MyAccout = (props) => {
         window.location.href = "/home";
     }
     
-    
-    
     return (
         <div className="myAccountContainer">
             <div className="container myAccoutInnerContainer">

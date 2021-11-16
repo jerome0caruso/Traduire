@@ -11,9 +11,12 @@ const Logout = (props) => {
         }).then(res =>  res.json())
           .then(data => {
             console.log(data)
+            localStorage.setItem('isLoggedIn', JSON.stringify(false));
+            localStorage.setItem('user', JSON.stringify({}));
          }).catch(err => console.log(err))
          window.location.reload(false);
     } 
+    
 
     return (
             <div>

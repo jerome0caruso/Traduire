@@ -4,7 +4,7 @@ import { Navigate  } from 'react-router-dom';
 const Login = (props) => {
     const [isValid, setIsValid] = useState(true)
     
-    const logIn = (e) => {
+    const logIn = async(e) => {
         e.preventDefault();
         let username = e.target.username.value;
         let password = e.target.password.value;
@@ -12,10 +12,10 @@ const Login = (props) => {
         let myHeaders = new Headers();
         myHeaders.append('Authorization', `Basic ${encodedString}`)
     
-        fetch('http://127.0.0.1:5000/login', {
+         await fetch('http://127.0.0.1:5000/login', {
             method: 'POST',
             headers: myHeaders,
-        }).then(res => res.json())
+        }).then(res =>res.json())
           .then(data => {
               console.log(data)
             if(data === "Invalid" || data === false) {
@@ -25,10 +25,12 @@ const Login = (props) => {
                 props.setCurrentUser(data[1])
                 props.setLoggedIn(true)
                 setIsValid(true)
+                props.getLocalStorage()
             }
 
          }).catch(err => console.log(err))
     }
+    console.log(props.loggedIn)
     return (
         props.loggedIn ? <Navigate to={`/${props.currentUser.id}`} /> : isValid ? 
         <div className="container w-25 my-5">

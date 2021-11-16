@@ -1,16 +1,16 @@
 import React, { useState, useEffect} from 'react'
 import { Modal, Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom'
-
-
+import DeleteCard from '../componets/DeleteCard';
+import UpdateCard from '../componets/updateCard';
 
 const MyCards = (props) => {
     const [tCards, setTCards] = useState([]);
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-    
+    const [cardToBeDeleted, setCardToBeDeleted] = useState('');
+    const [cardToBeUpdated, setCardToBeUpdated] = useState('');
+    const [deleteOrUpdate, setDeleteOrUpdate] = useState('');
 
+    console.log(deleteOrUpdate)
     useEffect(() => {
         fetch(`http://127.0.0.1:5000/getCards${props.currentUser['id']}`, {
             method: 'GET'
@@ -21,25 +21,15 @@ const MyCards = (props) => {
          }).catch(err => console.log(err))
             }, [])
 
-    const deleteCard = (cardId) => {
-        const newCardList = tCards.filter(card => card[0] !== cardId)
-        setTCards(newCardList);
-        let formData = {
-            cardId: cardId,
-            userId: props.currentUser['id']
-        }
-        const body = JSON.stringify(formData);
-        fetch(`http://127.0.0.1:5000/delete/card${cardId}`, {
-            method: 'DELETE',
-            body: body,
-        }).then(res => res.json())
-            .then(data => {
-                console.log(data, 'redirect')
-            })
-            
+    const handleCardToDelete = (id) => {
+        setCardToBeDeleted(id)
     }
-    const updateCard = () => {
-
+    const handleCardToUpdated = (id) => {
+        setCardToBeUpdated(id)
+    }
+    const handleCardUpdate = (comp) => {
+        console.log("here")
+        setDeleteOrUpdate(comp)
     }
     
     return (
@@ -49,26 +39,14 @@ const MyCards = (props) => {
                 {/* <h2>Cards:{tCards}, {rCards}</h2> */}
                 {tCards.map((element, i) => {
                         return (
-                        <div className="card mx-1 w-50">
+                        <div className="card mx-1 w-50" key={i}>
                                 <div className="card-body">
                                     <h5 className="card-title">{element[1]}</h5>
                                     <h5 className="card-title">{element[2]}</h5>
-                                    <p className="card-text">Some descirtions</p>
-                                    <button>Edit</button><button  onClick={ handleShow }>Delete</button>
-                                    <Modal show={show} onHide={handleClose}>
-                                        <Modal.Header closeButton>
-                                            <Modal.Title>Delete Card</Modal.Title>
-                                        </Modal.Header>
-                                        <Modal.Body>Are you sure that you want to delete this card?</Modal.Body>
-                                        <Modal.Footer>
-                                            <Button variant="secondary" onClick={handleClose}>
-                                                Close
-                                            </Button>
-                                            <Button variant="primary" onClick={() => { handleClose(); deleteCard(element[0]);}}>
-                                                Delete Card
-                                            </Button>
-                                        </Modal.Footer>
-                                    </Modal>
+                                    <p className="card-text">{ element[3] }</p>
+                                    <button onClick={() => { handleCardUpdate('update'); handleCardToUpdated(element[0])} }>Edit</button><button onClick={() => { setDeleteOrUpdate('delete'); handleCardToDelete(element[0])} }>Delete</button>
+                                    { deleteOrUpdate === 'delete' ? <DeleteCard currentUser={props.currentUser} cardToBeDeleted={cardToBeDeleted} tCards={tCards} setTCards={setTCards} deleteOrUpdate={deleteOrUpdate} setDeleteOrUpdate={setDeleteOrUpdate}/> : null }
+                                    {deleteOrUpdate === 'update' ? <UpdateCard currentUser={props.currentUser} cardToBeUpdated={cardToBeUpdated} cardNote={props.cardNote} setCardNote={props.setCardNote} deleteOrUpdate={deleteOrUpdate} setDeleteOrUpdate={setDeleteOrUpdate}                     cardNote={props.cardNote} setCardNote={props.setCardNote}/> : null}
                                 </div>
                             </div>)})}
             </div>

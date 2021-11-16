@@ -12,7 +12,7 @@ from flask_sqlalchemy  import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask import json, jsonify, request
-import copy
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
@@ -87,7 +87,7 @@ def cards():
     card_dict = json.loads(data.decode('UTF-8'))
     id = card_dict['cards']['userId']
     user = User.query.get_or_404(id)
-    all_cards.append([str(card_dict['cards']['cardId']), card_dict['cards']['translated'], card_dict['cards']['starterWord'],  card_dict['cards']['cardNote']])
+    all_cards.append([str(card_dict['cards']['cardId']), card_dict['cards']['translated'], card_dict['cards']['starterWord']])
     user.cardlist = user.cardlist + all_cards
     db.session.add(user) 
     db.session.commit()
@@ -106,7 +106,7 @@ def getCards(id):
 def updateUser(id):
     data = request.data
     user_dict = json.loads(data.decode('UTF-8'))
-    id = user_dict['id']
+    id = user_dict['userId']
     username = user_dict['username']
     email = user_dict['email']
     user = User.query.get_or_404(id)
@@ -134,10 +134,11 @@ def deleteUser(id):
 def deleteCard(id):
     data = request.data
     card_dict = json.loads(data.decode('UTF-8'))
-    print(id)
+    id = card_dict['cardId']
     user_id = card_dict['userId']
     user = User.query.get_or_404(user_id)
-    user.cardlist = [card for card in user.cardlist if card[0] != id]
+    user.cardlist = [card_id for card_id in user.cardlist if card_id[0] != id]
+    
     print("NEW CARD LIST")
     print(user.cardlist)
     db.session.commit()
@@ -151,18 +152,8 @@ def updateCard(id):
     card_dict = json.loads(data.decode('UTF-8'))
     id = card_dict['cardId']
     user_id = card_dict['userId']
-    user_updated_Info = card_dict['updatedInfo'] or "Nothing added"
     user = User.query.get_or_404(user_id)
-    newList = copy.deepcopy(user.cardlist)
-    indexx = 0
-    for i, value in enumerate(newList):
-        if value[0] == id:
-            indexx = i
-            value[0] = float(value[0]) + 1
-            value[3] = user_updated_Info
-    user.cardlist.insert(indexx, newList[indexx])
-    user.cardlist = [card for card in user.cardlist if card[0] != id]
-    print(user.cardlist)
+    print(card_dict)
     db.session.commit()
     return jsonify("Updating Card", card_dict)
 

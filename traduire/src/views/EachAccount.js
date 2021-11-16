@@ -1,16 +1,17 @@
-
-
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const EachAccount = (props) => {
+    const navigate = useNavigate();
     console.log(props.currentUser)
     const handleEdit = (e) => {
         e.preventDefault()
         console.log("editing")
         const username = e.target.u.value
         const email = e.target.e.value
-     
+        
         let formData = {
-            userId: props.currentUser['id'],
+            id: props.currentUser['id'],
             username: username,
             email: email
         }
@@ -20,11 +21,11 @@ const EachAccount = (props) => {
             body: body,
         }).then(res => res.json())
             .then(data => {
-                console.log(data)
-                props.setCurrentUser(data[1])
+                props.setCurrentUser(data[1]);
+                localStorage.setItem('user', JSON.stringify(props.currentUser));
+                navigate(`/myAccount:${props.currentUser['id']}`)
             })
         }
-
     return (
         <div className="container">
             <form onSubmit={handleEdit}>

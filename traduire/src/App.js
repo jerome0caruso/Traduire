@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import MainInput from './componets/Input';
 import MainOutput from './componets/Output';
@@ -19,10 +19,23 @@ const { IamAuthenticator } = require('ibm-watson/auth');
 function App() {
   const [flashCards, setFlashCards] = useState([]);
   const [toBeTranslated, setToBeTranslated] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
+  const [cardNote, setCardNote] = useState('This is for card notes');
+  const getLoggedIn = localStorage.getItem('isLoggedIn');
+  const [loggedIn, setLoggedIn] = useState(JSON.parse(getLoggedIn));
+  const getUserIn = localStorage.getItem('user');
+  const [currentUser, setCurrentUser] = useState(JSON.parse(getUserIn));
   const [language, setLanguage] = useState('');
  
+  useEffect(() => {
+    localStorage.setItem('user', JSON.stringify(currentUser));
+  },[currentUser])
+
+  const getLocalStorage = () => {
+    localStorage.setItem('isLoggedIn', String(true));
+    const getUser = localStorage.getItem('user');
+    setCurrentUser(JSON.parse(getUser));
+  }
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     const languageTranslator = new LanguageTranslatorV3({
@@ -73,6 +86,7 @@ function App() {
           userId: currentUser.id,
           translated: toBeTranslated,
           starterWord: mainInput.value,
+          cardNote: cardNote,
           cardId: cardId
         }
     })
@@ -121,10 +135,17 @@ function App() {
               </div>
 
             }></Route >
-          <Route path='/login' element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} currentUser={currentUser} setCurrentUser={setCurrentUser}/>}></Route>
+          <Route path='/login' element={<Login loggedIn={loggedIn} getLocalStorage={getLocalStorage} setLoggedIn={setLoggedIn} currentUser={currentUser} setCurrentUser={setCurrentUser}/>}></Route>
           <Route path='/loggedout' element={ <LoggedOut/> }></Route>
           <Route path='/myAccount:id' element={ <MyAccount currentUser={currentUser} setCurrentUser={setCurrentUser}/> }></Route>
-          <Route path='/myCards:id' element={ <MyCards flashCards={flashCards}  currentUser={currentUser}  setFlashCards={setFlashCards} toBeTranslated={toBeTranslated} />} />
+          <Route path='/myCards:id' element={ 
+                    <MyCards flashCards={flashCards}  
+                    currentUser={currentUser}  
+                    setFlashCards={setFlashCards} 
+                    toBeTranslated={toBeTranslated}
+                    cardNote={cardNote}
+                    setCardNote={setCardNote}
+                     />} />
           <Route path='/register' element={ <Register />} />
           <Route path='/eachAccount' element={ <EachAccount currentUser={currentUser} setCurrentUser={setCurrentUser}/>} />
         </Routes>
