@@ -1,4 +1,4 @@
-import { Modal, Container, Row, Col, Button, Form } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import React, { useState, useEffect} from 'react'
 
 const UpdateCard = (props) => {
@@ -18,7 +18,17 @@ const UpdateCard = (props) => {
             body: body,
         }).then(res => res.json())
             .then(data => {
-                console.log(data, 'redirect');
+                //update the card notes from the return from the DB
+                const updatedCard = data[1];
+                console.log(updatedCard)
+                const oldArray = [...props.tCards];
+                oldArray.forEach(card => {
+                    if(card[0] === updatedCard['cardId']) {
+                        card[3] = updatedCard['updatedInfo'];
+                    }
+                })
+                console.log(props.tCards, oldArray);
+                props.setTCards(oldArray);
             })
     }
 

@@ -1,4 +1,4 @@
-import pic1 from '../images/pic1.jpg';
+import pic1 from '../images/robot.png';
 import '../App.css';
 import { Link } from 'react-router-dom';
 
@@ -7,7 +7,7 @@ const Home = (props) => {
         <div className="container mainContainer">
             <div className="firstPage">
                 <div className="firstPage-pic">
-                    <img src={pic1} width="400px"></img>
+                    <i class="fas fa-robot"></i>
                 </div>
                 <div className="firstPage-words">
                     <h1>Welcome to Traduire!</h1>

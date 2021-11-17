@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logout from './LogOut';
-
+import '../App.css';
 const NavBar = (props) => {
     return (
       props.loggedIn ? (
-        <nav className="navbar navbar-expand-lg navBar">
+        <nav className="navbar navbar-expand-lg navBar text-white">
           <div className="container-fluid">
             <Link style={{listStyleType: 'none'}} className="navbar-brand" to={`/${props.currentUser.id}`}>Traduire</Link>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
+            <button className="navbar-toggler navBarIcon" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon navBarIcon"><i className="fa fa-bars"></i></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
@@ -32,7 +32,7 @@ const NavBar = (props) => {
                     <li><Link className="dropdown-item" to={`/myAccount${props.currentUser.id}`}>My Account</Link></li>
                     <li><Link className="dropdown-item" to={`/myCards${props.currentUser.id}`}>My Flash Cards</Link></li>
                     <li><hr className="dropdown-divider"/></li>
-                    <Link to="/home"><Logout loggedIn={props.loggedIn} setLoggedIn={props.setLoggedIn}/></Link>
+                    <li className="logoutButton"><Link to="/home"><Logout loggedIn={props.loggedIn} setLoggedIn={props.setLoggedIn}/></Link></li>
                   </ul>
                 </li>
               </form>
@@ -44,9 +44,9 @@ const NavBar = (props) => {
       (
         <nav className="navbar navbar-expand-lg navBar">
         <div className="container-fluid">
-          <li style={{listStyleType: 'none'}} className="navbar-brand" to="/">Traduire</li>
+          <Link style={{listStyleType: 'none'}} className="navbar-brand" to="/">Traduire</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon navBarIcon"><i class="fa fa-bars"></i></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">

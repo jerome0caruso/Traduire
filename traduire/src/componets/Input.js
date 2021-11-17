@@ -2,12 +2,12 @@ import React from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import '../App.css';
 
-const MainInput = ({toBeTranslated, setToBeTranslated, handleSubmit, handleClear, handleflashCards}) => {
+const MainInput = ({toBeTranslated, setToBeTranslated, handleSubmit, clearFields, flashCardsTranslation, isLoadingHandler, hasError }) => {
     return (
         <Container className="mt-4">
             <Row className="justify-content-center">
                 <Col>
-                    <Form onSubmit={handleSubmit}>
+                    <Form>
                         <Row>
                             <Col>
                                 <textarea
@@ -19,9 +19,13 @@ const MainInput = ({toBeTranslated, setToBeTranslated, handleSubmit, handleClear
                                 />
                             </Col>
                             <Col>
-                                <Button type="Submit" variant="primary">Search</Button>
-                                <Button  onClick={handleflashCards} variant="primary">Save</Button>
-                                <Button type="Submit" onClick={handleClear} variant="primary">Clear</Button>
+                                <Button type="Submit" onClick={(e) => { isLoadingHandler(); handleSubmit(e)} } variant="primary">Search</Button>
+                                <Button  onClick={flashCardsTranslation} variant="primary">Save</Button>
+                                <Button type="Submit" onClick={clearFields} variant="primary">Clear</Button>
+                                {hasError ? (<div className="errorBox">
+                                    <p>I didn't find that, try using a different word/phrase or try using an article before the word/phrase.</p>
+                                </div>): null }
+                                
                             </Col>
                         </Row>
                     </Form>

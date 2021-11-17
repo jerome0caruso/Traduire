@@ -13,6 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask import json, jsonify, request
 import copy
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
@@ -43,6 +44,7 @@ def load_user(user_id):
 def index():
     return render_template('index.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     data = request.headers.get('Authorization')
@@ -71,7 +73,6 @@ def login():
 def signup():
     data = request.data
     user_dict = json.loads(data.decode('UTF-8'))
-    
     hashed_password = generate_password_hash(user_dict['password'], method='sha256')
     new_user = User(username=user_dict['username'], email=user_dict['email'], password=hashed_password)
     db.session.add(new_user) 
@@ -112,7 +113,13 @@ def updateUser(id):
     user = User.query.get_or_404(id)
     user.username = username
     user.email = email
-    print(user_dict)
+    existing_username = User.query.filter_by(username=username).all()
+    existing_user_email = User.query.filter_by(email=email).all()
+    if existing_username:
+        return jsonify({'error': f'User {username} is already registered. Please try again.'})
+    if existing_user_email:
+        return jsonify({'error': f'User {email} is already registered. Please try again.'})
+    print(user_dict, "Herererer")
     db.session.add(user) 
     db.session.commit()
     return jsonify("Updating user", user_dict)

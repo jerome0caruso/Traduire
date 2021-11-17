@@ -24,7 +24,7 @@ const EachAccount = (props) => {
                 props.setCurrentUser(data[1]);
                 localStorage.setItem('user', JSON.stringify(props.currentUser));
                 navigate(`/myAccount:${props.currentUser['id']}`)
-            })
+            }).catch(err => { console.log(err)})
         }
     return (
         <div className="container">

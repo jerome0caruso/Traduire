@@ -39,7 +39,7 @@ const Register = () => {
         
     }
     return (
-        <div className="container">
+        <div className="container w-25">
             <h2>{hasError ? hasError : null}</h2>
             <form className="form" onSubmit={handleSubmit} >
                 <h3 className='text-center'> Register Here</h3>
