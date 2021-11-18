@@ -116,7 +116,28 @@ textarea { resize: none; }
   justify-content: center;
 }
 
-
+.registerContainer {
+  display: flex;
+  margin: 3rem auto;
+  justify-content: center;
+  display: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.formContainer {
+  width: 40%;
+}
+.formCriContainer {
+  border: 2px solid #31bae0;;
+  width: 20%;
+  margin-left: 2rem;
+  padding: .8rem .5rem .5rem 0;
+}
+.errorMessage {
+  font-size: 1.2rem;
+  color: #31bae0;
+  font-weight: bold;
+}
 .firstPage-words {
   margin-top: 2.5rem;
 }
@@ -252,5 +273,17 @@ textarea { resize: none; }
     height: 450px;
     width: 80%;
     margin: 0!important;
+  }
+  .registerContainer {
+    flex-direction: column;
+  }
+  .formContainer {
+    order: 2;
+    width: 70%;
+  }
+  .formCriContainer {
+    order: 1;
+    margin-bottom: 2.4rem;
+    width: 70%;
   }
 }
