@@ -13,6 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask import json, jsonify, request
 import copy
+from sqlalchemy.exc import IntegrityError
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
@@ -121,16 +122,21 @@ def updateUser(id):
     user = User.query.get_or_404(id)
     user.username = username
     user.email = email
-    existing_username = User.query.filter_by(username=username).all()
-    existing_user_email = User.query.filter_by(email=email).all()
-    if existing_username:
+    try:
+        existing_username = User.query.filter_by(username=username).all()
+    except IntegrityError as e:
+        print("return errorrr")
         return jsonify({'error': f'User {username} is already registered. Please try again.'})
-    if existing_user_email:
+    try:
+        existing_user_email = User.query.filter_by(email=email).all()
+    except IntegrityError as e:
         return jsonify({'error': f'User {email} is already registered. Please try again.'})
-    print(user_dict, "Herererer")
+    print("it passed")
     db.session.add(user) 
     db.session.commit()
     return jsonify("Updating user", user_dict)
+
+    
 
 @app.route('/delete<id>', methods=['DELETE'])
 # @login_required

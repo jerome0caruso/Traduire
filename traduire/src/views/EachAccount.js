@@ -2,8 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 const EachAccount = (props) => {
+    const [error, setError] = useState(false);
     const navigate = useNavigate();
-    console.log(props.currentUser)
+    console.log(props.currentUser);
     const handleEdit = (e) => {
         e.preventDefault()
         console.log("editing")
@@ -21,15 +22,21 @@ const EachAccount = (props) => {
             body: body,
         }).then(res => res.json())
             .then(data => {
-                props.setCurrentUser(data[1]);
-                localStorage.setItem('user', JSON.stringify(props.currentUser));
-                navigate(`/myAccount:${props.currentUser['id']}`)
-            }).catch(err => { console.log(err)})
+                if(data['error']) {
+                   setError(true);
+                } else {
+                    props.setCurrentUser(data[1]);
+                    localStorage.setItem('user', JSON.stringify(props.currentUser));
+                    navigate(`/myAccount:${props.currentUser['id']}`)
+                }
+
+            }).catch(err => {console.log(err)})
         }
     return (
         <div className="container w-25">
             <form onSubmit={handleEdit}>
                 <h6 className='text-center flashMessage'>Edit User {props.u}</h6>
+                {error ? <h5 className="errorMessage">Your username or email is already in use,  Please try a different phrase.</h5> : null}
                 <div className='form-group'>
                     <fieldset>
                         <label htmlFor='u'>Username</label>
