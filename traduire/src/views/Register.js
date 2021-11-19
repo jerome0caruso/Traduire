@@ -4,12 +4,12 @@ import '../App.css';
 import '../index.css';
 
 const Register = () => {
-    const [redirect, setRedirect] = useState('');
     const [hasError, setHasError] = useState(false);
     const [userError, setUserError] = useState('');
     const [passError, setPassError] = useState('');
     const [pass2Error, setPass2Error] = useState('');
     const [emailError, setEmailError] = useState('');
+    const [serverError, setServerError] = useState(false);
 
     const navigate = useNavigate();
     const filterUser = (username, pw1, pw2, email) => {
@@ -34,7 +34,6 @@ const Register = () => {
 
     }
     const handleChange = () => {
-        console.log("Cahnge")
         setHasError(false);
     }
 
@@ -61,19 +60,22 @@ const Register = () => {
                 body: data
             }).then(res => res.json())
               .then(data => {
-                console.log(data);
-                navigate('/login')
+                if(data['error']) {
+                    setHasError(true)
+                    setServerError(data['error'])
+                } else {
+                    navigate('/login');
+                }
               })
               .catch(err => console.log(err))
         }
     }
     return (
         <div className="registerContainer container">
-        
             <div className="formContainer">
                 <form className="form" onSubmit={handleSubmit} >
-                    <h3 className='text-center'> Register Here</h3>
-                
+                    <h3 className='text-center'>Register Here</h3>
+                    <h4 className="errorMessage"> {serverError}</h4>
                     <div className='form-group'>
                         <fieldset>
                         <h4 className="errorMessage"> {userError}</h4>
@@ -95,14 +97,14 @@ const Register = () => {
                             <label htmlFor='confirmPass'>Confirm Password</label>
                             <input type='password' name='confirmPass' onChange={handleChange}  className='form-control' placeholder='Confirm Password' />
                         </fieldset>
-                        <input type='submit' className='btn btn-secondary' />
+                        <input type='submit' className='btn btnls btn-secondary' />
                     </div>
                 </form>
             </div>
             <div className="formCriContainer">
                 <ul>
-                    <li><p>Username must be at least 3 characters and </p></li>
-                    <li>Username must be less than 15 characters </li>
+                    <li><p>Username must be at least 3 characters</p></li>
+                    <li>Username must be less than 15 characters</li>
                     <li>Password must be at least 3 characters</li>
                     <li>only email.example.com formats are considered valid</li>
                 </ul>

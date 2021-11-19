@@ -18,7 +18,7 @@ const MainInput = ({toBeTranslated, setToBeTranslated, handleSubmit, clearFields
                                 resize="false"
                                 />
                             </Col>
-                            <Col>
+                            <Col className="mainBtn">
                                 <Button type="Submit" onClick={(e) => { isLoadingHandler(); handleSubmit(e)} } variant="primary">Search</Button>
                                 <Button  onClick={flashCardsTranslation} variant="primary">Save</Button>
                                 <Button type="Submit" onClick={clearFields} variant="primary">Clear</Button>

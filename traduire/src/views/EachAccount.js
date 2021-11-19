@@ -27,9 +27,9 @@ const EachAccount = (props) => {
             }).catch(err => { console.log(err)})
         }
     return (
-        <div className="container">
+        <div className="container w-25">
             <form onSubmit={handleEdit}>
-                <h6 className='text-center'>Edit User: {props.u}</h6>
+                <h6 className='text-center flashMessage'>Edit User {props.u}</h6>
                 <div className='form-group'>
                     <fieldset>
                         <label htmlFor='u'>Username</label>

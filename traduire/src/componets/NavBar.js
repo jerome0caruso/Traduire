@@ -23,7 +23,7 @@ const NavBar = (props) => {
                   <a className="nav-link">Links</a>
                 </li>
               </ul>
-              <form className="d-flex px-5">
+              <form className="d-flex dropdown">
                 <li className="nav-item dropdown" style={{ listStyleType: 'none'}}>
                   <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Dropdown

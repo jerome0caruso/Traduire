@@ -33,7 +33,7 @@ const Login = (props) => {
     console.log(props.loggedIn)
     return (
         props.loggedIn ? <Navigate to={`/${props.currentUser.id}`} /> : isValid ? 
-        <div className="container w-25 my-5">
+        <div className="container my-5 loginContainer">
         <form className="form" defaultValue="form" onSubmit={logIn}>
             <h3 className='text-center'>Login Here</h3>
             <div className='form-group'>
@@ -49,10 +49,11 @@ const Login = (props) => {
             </div>
         </form>
         </div> :
-            <div className="container w-25 my-5">
+            <div className="container loginContainer my-5">
             <form className="form" defaultValue="form" onSubmit={logIn}>
-                <h5>Your username or password is incorrect.  Please try again.</h5>
+                
                 <h3 className='text-center'>Login Here</h3>
+                <h5 className="errorMessage">Your username or password is incorrect.  Please try again.</h5>
                 <div className='form-group'>
                     <fieldset>
                         <label htmlFor='username'>Username</label>
@@ -62,7 +63,7 @@ const Login = (props) => {
                         <label htmlFor='password'>Password</label>
                         <input type='password' className='form-control' name='password' defaultValue="Password" />
                     </fieldset>
-                    <input type='submit' className='btn btn-primary' defaultValue="Login" />
+                    <input type='submit' className='btn btnls btn-primary' defaultValue="Login" />
                 </div>
             </form>
             </div>

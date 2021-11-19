@@ -74,11 +74,19 @@ def signup():
     data = request.data
     user_dict = json.loads(data.decode('UTF-8'))
     hashed_password = generate_password_hash(user_dict['password'], method='sha256')
+    username=user_dict['username'] 
+    email=user_dict['email'] 
     new_user = User(username=user_dict['username'], email=user_dict['email'], password=hashed_password)
+    existing_username = User.query.filter_by(username=username).all()
+    existing_user_email = User.query.filter_by(email=email).all()
+    if existing_username:
+        return jsonify({'error': f'User {username} is already registered. Please try again.'})
+    if existing_user_email:
+        return jsonify({'error': f'User {email} is already registered. Please try again.'})
     db.session.add(new_user) 
     db.session.commit()
   
-    return 'You like that?'
+    return jsonify({'user': f'User {username} {email}'})
     
 @app.route('/cards', methods=['POST'])
 # @login_required

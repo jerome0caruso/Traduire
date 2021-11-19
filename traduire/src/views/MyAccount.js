@@ -36,7 +36,7 @@ const MyAccout = (props) => {
                 <h2>Email: {props.currentUser['email']}</h2>
                 <h2>UserId: {props.currentUser['id']} </h2>
                 <div>
-                <Link to="/eachAccount" className="btn btn-primary">Edit</Link>
+                <Link to="/eachAccount" className="btn editBtn btn-primary mx-3">Edit</Link>
                 <Button to="/deleteAccount" className="btn btn-danger" onClick={ handleShow }>Delete</Button>
                 </div>
             </div>
